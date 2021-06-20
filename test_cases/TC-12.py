@@ -19,7 +19,7 @@ def test_main():
         # 4. Zap to channel
         time.sleep(10)
         # 3. Zap to channel
-        stbt.press(RCU.CHANNELUP.value)
+        stbt.press(RCU.CHANNELUP)
         zap_count = zap_count + 1
         stbt.draw_text("{}".format(zap_count))
 

@@ -34,7 +34,7 @@ def test_main2():
         page_home.go_to_home()
         page_home.access_menu("APPS")
         page_apps.navigate_to_app(App.COVID)
-        stbt.press(RCU.OK.value)
+        stbt.press(RCU.OK)
         start = time.time()
         assert page_covid.get_initial_screen()
         end = time.time()

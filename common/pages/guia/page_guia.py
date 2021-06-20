@@ -8,26 +8,28 @@ from common.exceptions import NotInScreen
 from common.utils.get_time_and_date import GetTimeAndDate
 from common.utils.rcu import RCU
 
-# Relative path for images from ajustes
-IMAGES_DIR = "./images/guia_"
-PAGE_TITLE = IMAGES_DIR + "page_title.png"
-LOGO = IMAGES_DIR + "logo.png"
-PROGRESS_BAR = IMAGES_DIR + "progress_bar.png"
-GRABAR_ICON = IMAGES_DIR + "grabar.png"
-HD_ICON = IMAGES_DIR + "hd.png"
-INICIAR_ICON = IMAGES_DIR + "iniciar.png"
-OK_ICON = IMAGES_DIR + "ok.png"
-DOLBY_ICON = IMAGES_DIR + "dolby.png"
-PARENTAL_TP = IMAGES_DIR + "parental_TP.png"
-PARENTAL_07 = IMAGES_DIR + "parental_7.png"
-PARENTAL_12 = IMAGES_DIR + "parental_12.png"
-PARENTAL_16 = IMAGES_DIR + "parental_16.png"
-PARENTAL_18 = IMAGES_DIR + "parental_18.png"
 
-parental_list = [PARENTAL_TP, PARENTAL_07, PARENTAL_12, PARENTAL_16, PARENTAL_18]
+class Img():
+    """List of reference images locators
+    """
 
-# Error messages
-NOT_IN_SCREEN = "Not in {}".format(__name__)
+    PAGE_TITLE = "./images/guia_page_title.png"
+    LOGO = "./images/guia_logo.png"
+    PROGRESS_BAR = "./images/guia_progress_bar.png"
+    GRABAR_ICON = "./images/guia_grabar.png"
+    HD_ICON = "./images/guia_hd.png"
+    INICIAR_ICON = "./images/guia_iniciar.png"
+    OK_ICON = "./images/guia_ok.png"
+    DOLBY_ICON = "./images/guia_dolby.png"
+    PARENTAL_TP = "./images/guia_parental_TP.png"
+    PARENTAL_07 = "./images/guia_parental_7.png"
+    PARENTAL_12 = "./images/guia_parental_12.png"
+    PARENTAL_16 = "./images/guia_parental_16.png"
+    PARENTAL_18 = "./images/guia_parental_18.png"
+
+
+parental_list = [Img.PARENTAL_TP, Img.PARENTAL_07,
+                 Img.PARENTAL_12, Img.PARENTAL_16, Img.PARENTAL_18]
 
 
 class Guide(stbt.FrameObject):
@@ -54,10 +56,11 @@ class Guide(stbt.FrameObject):
         region = stbt.Region(0, 0, width=1280, height=100)
 
         title = stbt.match(
-            PAGE_TITLE, frame=self._frame, match_parameters=None, region=region
+            Img.PAGE_TITLE, frame=self._frame, match_parameters=None, region=region
         )
 
-        logo = stbt.match(LOGO, frame=self._frame, match_parameters=None, region=region)
+        logo = stbt.match(Img.LOGO, frame=self._frame,
+                          match_parameters=None, region=region)
 
         return title and logo
 
@@ -100,7 +103,7 @@ class Guide(stbt.FrameObject):
         """
         return (
             stbt.match(
-                HD_ICON,
+                Img.HD_ICON,
                 frame=self._frame,
                 match_parameters=None,
                 region=stbt.Region(1080, 530, width=190, height=180),
@@ -116,7 +119,7 @@ class Guide(stbt.FrameObject):
         """
         return (
             stbt.match(
-                DOLBY_ICON,
+                Img.DOLBY_ICON,
                 frame=self._frame,
                 match_parameters=None,
                 region=stbt.Region(1080, 530, width=190, height=180),
@@ -154,7 +157,7 @@ class Guide(stbt.FrameObject):
         )
 
         if stbt.match(
-            PROGRESS_BAR,
+            Img.PROGRESS_BAR,
             frame=self._frame,
             match_parameters=None,
             region=stbt.Region(405, 595, width=25, height=45),
@@ -229,14 +232,14 @@ def get_channel_number():
 
 def open_guide():
     if not is_visible():
-        stbt.press_and_wait(RCU.EPG.value)
+        stbt.press_and_wait(RCU.EPG)
 
     assert_screen()
 
 
 def open_guide_get_channel_number():
     if not is_visible():
-        stbt.press_and_wait(RCU.EPG.value)
+        stbt.press_and_wait(RCU.EPG)
 
     page = assert_screen()
     stbt.draw_text("Channel Number: {}".format(page.channel_number))

@@ -1,17 +1,13 @@
 # -*- coding: utf-8 -*-
 import time
-from enum import Enum
 
 import stbt
 from common.exceptions import NotInScreen, TimeoutError
 from common.utils.rcu import RCU
 
 
-class Img(Enum):
-    """List of images
-
-    Args:
-        Enum (str): Holds path to image
+class Img():
+    """List of reference images locators
     """
 
     SCREEN_SPLASH = "./images/atleti_splash_screen.png"
@@ -59,7 +55,7 @@ class Atleti(stbt.FrameObject):
         region = stbt.Region(95, 35, width=135, height=100)
 
         logo = stbt.match(
-            Img.LOGO.value, frame=self._frame, match_parameters=None, region=region
+            Img.LOGO, frame=self._frame, match_parameters=None, region=region
         )
 
         return logo
@@ -83,7 +79,7 @@ class Atleti(stbt.FrameObject):
 
         for pill in pills:
             if stbt.match(
-                pill.value, frame=self._frame, match_parameters=None, region=region
+                pill, frame=self._frame, match_parameters=None, region=region
             ):
                 return pill.name
 
@@ -107,7 +103,7 @@ def get_initial_screen():
         boolean: returns True if the initial screen was found within 30 seconds
     """
     try:
-        stbt.wait_for_match(Img.SCREEN_INITIAL.value, timeout_secs=30)
+        stbt.wait_for_match(Img.SCREEN_INITIAL, timeout_secs=30)
     except stbt.MatchTimeout:
         return False
     else:
@@ -140,7 +136,7 @@ def get_splash_screen():
         boolean: returns True if the splash screen was found within 15 seconds
     """
     try:
-        stbt.wait_for_match(Img.SCREEN_SPLASH.value, timeout_secs=15)
+        stbt.wait_for_match(Img.SCREEN_SPLASH, timeout_secs=15)
     except stbt.MatchTimeout:
         return False
     else:
@@ -156,8 +152,8 @@ def select_pill(pill, change_dir=False):
     """
     if change_dir:
         stbt.press_until_match(
-            RCU.LEFT.value,
-            pill.value,
+            RCU.LEFT,
+            pill,
             max_presses=4,
             interval_secs=0.8,
             region=stbt.Region(80, 595, width=1170, height=65),
@@ -165,8 +161,8 @@ def select_pill(pill, change_dir=False):
     else:
         try:
             stbt.press_until_match(
-                RCU.RIGHT.value,
-                pill.value,
+                RCU.RIGHT,
+                pill,
                 max_presses=4,
                 interval_secs=0.8,
                 region=stbt.Region(80, 595, width=1170, height=65),
@@ -182,7 +178,7 @@ def is_continue_popup():
         bool: True if detected, else False
     """
     return stbt.match(
-        Img.CONTINUAR.value,
+        Img.CONTINUAR,
         match_parameters=None,
         region=stbt.Region(260, 165, width=755, height=220),
     )
@@ -191,8 +187,8 @@ def is_continue_popup():
 def select_continue():
     """Select Continue"""
     stbt.press_until_match(
-        RCU.LEFT.value,
-        Img.PILL_CONTINUAR.value,
+        RCU.LEFT,
+        Img.PILL_CONTINUAR,
         max_presses=2,
         interval_secs=0.8,
         region=stbt.Region(318, 370, width=645, height=70),
@@ -202,8 +198,8 @@ def select_continue():
 def select_start_over():
     """Select Reproducir desde el principio"""
     stbt.press_until_match(
-        RCU.RIGHT.value,
-        Img.PILL_REPRODUCIR_DEL_INICIO.value,
+        RCU.RIGHT,
+        Img.PILL_REPRODUCIR_DEL_INICIO,
         max_presses=2,
         interval_secs=0.8,
         region=stbt.Region(318, 370, width=645, height=70),
@@ -217,7 +213,7 @@ def detected_movement():
         bool: True if motion is detected, else False
     """
     try:
-        stbt.wait_for_motion(timeout_secs=20, mask=Img.PLAYER_MASK.value)
+        stbt.wait_for_motion(timeout_secs=20, mask=Img.PLAYER_MASK)
         return True
     except stbt.MotionTimeout:
         return False

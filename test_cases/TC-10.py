@@ -32,7 +32,7 @@ def test_main():
 
     time.sleep(2)
 
-    stbt.press(RCU.CHANNELUP.value)
+    stbt.press(RCU.CHANNELUP)
 
     time.sleep(10)
 

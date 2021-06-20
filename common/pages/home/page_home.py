@@ -4,37 +4,35 @@ import stbt
 from common.utils.rcu import RCU
 from common.exceptions import NotInScreen
 
-# Relative path for images from home
-IMAGES_DIR = "./images/home_"
+
+class Img():
+    """List of reference images locators
+    """
+
+    LOGO = "./images/movistar_logo_transparent.png"
+    DOTS = "./images/dots.png"
+
 
 # Images for menu were cropped in Region(20, 372, width=243, height=57)
 MENU = {
-    "SEARCH": "busqueda.png",
-    "GUIA": "guia.png",
-    "U7D": "u7d.png",
-    "ORIGINALES": "originales.png",
-    "CINE": "cine.png",
-    "SERIES": "series.png",
-    "DEPORTES": "deportes.png",
-    "NETFLIX": "netflix.png",
-    "INFANTIL": "infantil.png",
-    "DOCUMENTALES": "documentales.png",
-    "MUSICA": "musica.png",
-    "OTROS": "otros.png",
-    "5S": "5s.png",
-    "ADULTOS": "adultos.png",
-    "MICUENTA": "micuenta.png",
-    "AJUSTES": "ajustes.png",
-    "APPS": "apps.png",
+    "SEARCH": "./images/home_busqueda.png",
+    "GUIA": "./images/home_guia.png",
+    "U7D": "./images/home_u7d.png",
+    "ORIGINALES": "./images/home_originales.png",
+    "CINE": "./images/home_cine.png",
+    "SERIES": "./images/home_series.png",
+    "DEPORTES": "./images/home_deportes.png",
+    "NETFLIX": "./images/home_netflix.png",
+    "INFANTIL": "./images/home_infantil.png",
+    "DOCUMENTALES": "./images/home_documentales.png",
+    "MUSICA": "./images/home_musica.png",
+    "OTROS": "./images/home_otros.png",
+    "5S": "./images/home_5s.png",
+    "ADULTOS": "./images/home_adultos.png",
+    "MICUENTA": "./images/home_micuenta.png",
+    "AJUSTES": "./images/home_ajustes.png",
+    "APPS": "./images/home_apps.png",
 }
-
-# Initialize MENU dictionary to append IMAGES_DIR to the image names
-for k, v in MENU.items():
-    MENU[k] = IMAGES_DIR + v
-
-
-# Error messages
-NOT_IN_SCREEN = "Not in {}".format(__name__)
 
 
 class Home(stbt.FrameObject):
@@ -57,8 +55,8 @@ class Home(stbt.FrameObject):
     @property
     def is_visible(self):
         """Returns True if in Home page"""
-        logo_img = IMAGES_DIR + "movistar_logo_transparent.png"
-        dots_img = IMAGES_DIR + "dots.png"
+        logo_img = Img.LOGO
+        dots_img = Img.DOTS
 
         logo = stbt.match(
             logo_img,
@@ -110,7 +108,7 @@ def go_to_home():
     try:
         assert_screen()
     except NotInScreen:
-        stbt.press_and_wait(RCU.MENU.value, timeout_secs=5, stable_secs=2)
+        stbt.press_and_wait(RCU.MENU, timeout_secs=5, stable_secs=2)
         return assert_screen()
     else:
         return True
@@ -127,7 +125,7 @@ def access_menu(item):
     try:
         stbt.draw_text("Navigating to {}".format(item))
         stbt.press_until_match(
-            RCU.LEFT.value,
+            RCU.LEFT,
             MENU[item],
             interval_secs=0.8,
             max_presses=len(MENU),
@@ -142,4 +140,4 @@ def access_menu(item):
         )
     else:
         time.sleep(1)
-        stbt.press_and_wait(RCU.OK.value)
+        stbt.press_and_wait(RCU.OK)

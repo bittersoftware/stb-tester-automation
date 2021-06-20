@@ -24,7 +24,7 @@ def test_main():
         page_home.go_to_home()
         page_home.access_menu("APPS")
         page_apps.navigate_to_app(App.ATLETI)
-        stbt.press(RCU.OK.value)
+        stbt.press(RCU.OK)
 
         # Calculates time until initial screen
         start = time.time()

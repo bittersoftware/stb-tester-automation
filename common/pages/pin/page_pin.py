@@ -1,22 +1,20 @@
 # -*- coding: utf-8 -*-
-import time
-
 import stbt
-from common.utils.rcu import RCU
+from common.utils.navigation_utils import send_num_rcu_keys
 from common.exceptions import NotInScreen
 
-# Relative path for images from ajustes
-IMAGES_DIR = "./images/pin_"
-PIN_FOCUS = IMAGES_DIR + "box_focused.png"
-PIN_NOT_FOCUS = IMAGES_DIR + "box_not_focused.png"
-PIN_RED_BOX = IMAGES_DIR + "incorrect_red_box.png"
-PIN_INCORRECT_TEXT = IMAGES_DIR + "incorrect.png"
+
+class Img():
+    """List of reference images locators
+    """
+
+    PIN_FOCUS = "./images/pin_box_focused.png"
+    PIN_NOT_FOCUS = "./images/pin_box_not_focused.png"
+    PIN_RED_BOX = "./images/pin_incorrect_red_box.png"
+    PIN_INCORRECT_TEXT = "./images/pin_incorrect.png"
 
 
 DEFAULT_PIN = 1111
-
-# Error messages
-NOT_IN_SCREEN = "Not in {}".format(__name__)
 
 
 class Pin(stbt.FrameObject):
@@ -43,11 +41,11 @@ class Pin(stbt.FrameObject):
         region = stbt.Region(475, 335, width=315, height=80)
 
         box_1 = stbt.match(
-            PIN_FOCUS, frame=self._frame, match_parameters=None, region=region
+            Img.PIN_FOCUS, frame=self._frame, match_parameters=None, region=region
         )
 
         box_2 = stbt.match(
-            PIN_NOT_FOCUS, frame=self._frame, match_parameters=None, region=region
+            Img.PIN_NOT_FOCUS, frame=self._frame, match_parameters=None, region=region
         )
 
         return box_1 and box_2
@@ -95,18 +93,14 @@ def insert_pin(digit_list=DEFAULT_PIN):
     ), "All digits must be in range 0-9"
 
     if assert_screen():
-        converted_digit_list = _convert_pin_list(digit_list)
-
-        for index, digit in enumerate(converted_digit_list):
-            stbt.press(digit)
-            time.sleep(0.5)
+        send_num_rcu_keys(digit_list)
 
         region = stbt.Region(440, 315, width=390, height=155)
 
         assert stbt.wait_until(
-            lambda: not stbt.match(PIN_FOCUS, region=region)
-            and not stbt.match(PIN_NOT_FOCUS, region=region)
-            or stbt.match(PIN_INCORRECT_TEXT, region=region),
+            lambda: not stbt.match(Img.PIN_FOCUS, region=region)
+            and not stbt.match(Img.PIN_NOT_FOCUS, region=region)
+            or stbt.match(Img.PIN_INCORRECT_TEXT, region=region),
             timeout_secs=3,
         )
 
@@ -132,8 +126,3 @@ def is_pin_incorrect():
     else:
         stbt.draw_text("PIN CORRECTO")
         return False
-
-
-def _convert_pin_list(pin_list):
-    key = "NUMERIC_"
-    return [RCU[key + str(digit)].value for digit in pin_list]

@@ -9,34 +9,36 @@ from common.pages.guia import page_guia
 from common.pages.home import page_home
 from common.pages.pin import page_pin
 from common.utils.rcu import RCU
-
-# Relative path for images from live miniguide and other elements
-IMAGES_DIR = "./images/en_vivo_"
-MINIGUIDE = IMAGES_DIR + "mini_guide.png"
-PROGRESS_BAR = IMAGES_DIR + "progress_bar.png"
-CHANNEL_FOCUS = IMAGES_DIR + "channel_focus.png"
-ENVENTANAR_FOCUS = IMAGES_DIR + "enventanar_focus.png"
-SUGERENCIAS_FOCUS = IMAGES_DIR + "sugerencias_focus.png"
-MINIGUIDE_FOCUS = IMAGES_DIR + "mini_guide_focus.png"
-PAUSE_ICON = IMAGES_DIR + "pause.png"
-SUGERENCIAS_ICON = IMAGES_DIR + "sugerencias_icon.png"
-ENVENTANAR_ICON = IMAGES_DIR + "enventanar_icon.png"
-GRABAR_ICON = IMAGES_DIR + "grabar.png"
-HD_ICON = IMAGES_DIR + "hd.png"
-INICIAR_ICON = IMAGES_DIR + "iniciar.png"
-OK_ICON = IMAGES_DIR + "ok.png"
-PARENTAL_TP = IMAGES_DIR + "parental_TP.png"
-PARENTAL_07 = IMAGES_DIR + "parental_7.png"
-PARENTAL_12 = IMAGES_DIR + "parental_12.png"
-PARENTAL_16 = IMAGES_DIR + "parental_16.png"
-PARENTAL_18 = IMAGES_DIR + "parental_18.png"
-MOTION_MASK = IMAGES_DIR + "motion_mask.png"
-
-parental_list = [PARENTAL_TP, PARENTAL_07, PARENTAL_12, PARENTAL_16, PARENTAL_18]
+from common.utils.navigation_utils import send_num_rcu_keys
 
 
-# Error messages
-NOT_IN_SCREEN = "Not in {}".format(__name__)
+class Img():
+    """List of reference images locators
+    """
+
+    MINIGUIDE = "./images/en_vivo_mini_guide.png"
+    PROGRESS_BAR = "./images/en_vivo_progress_bar.png"
+    CHANNEL_FOCUS = "./images/en_vivo_channel_focus.png"
+    ENVENTANAR_FOCUS = "./images/en_vivo_enventanar_focus.png"
+    SUGERENCIAS_FOCUS = "./images/en_vivo_sugerencias_focus.png"
+    MINIGUIDE_FOCUS = "./images/en_vivo_mini_guide_focus.png"
+    PAUSE_ICON = "./images/en_vivo_pause.png"
+    SUGERENCIAS_ICON = "./images/en_vivo_sugerencias_icon.png"
+    ENVENTANAR_ICON = "./images/en_vivo_enventanar_icon.png"
+    GRABAR_ICON = "./images/en_vivo_grabar.png"
+    HD_ICON = "./images/en_vivo_hd.png"
+    INICIAR_ICON = "./images/en_vivo_iniciar.png"
+    OK_ICON = "./images/en_vivo_ok.png"
+    PARENTAL_TP = "./images/en_vivo_parental_TP.png"
+    PARENTAL_07 = "./images/en_vivo_parental_7.png"
+    PARENTAL_12 = "./images/en_vivo_parental_12.png"
+    PARENTAL_16 = "./images/en_vivo_parental_16.png"
+    PARENTAL_18 = "./images/en_vivo_parental_18.png"
+    MOTION_MASK = "./images/en_vivo_motion_mask.png"
+
+
+parental_list = [Img.PARENTAL_TP, Img.PARENTAL_07,
+                 Img.PARENTAL_12, Img.PARENTAL_16, Img.PARENTAL_18]
 
 
 class EnVivo(stbt.FrameObject):
@@ -65,11 +67,11 @@ class EnVivo(stbt.FrameObject):
         region2 = stbt.Region(308, 640, width=660, height=75)
 
         bar = stbt.match(
-            PROGRESS_BAR, frame=self._frame, match_parameters=None, region=region1
+            Img.ROGRESS_BAR, frame=self._frame, match_parameters=None, region=region1
         )
 
         ok = stbt.match(
-            OK_ICON, frame=self._frame, match_parameters=None, region=region2
+            Img.OK_ICON, frame=self._frame, match_parameters=None, region=region2
         )
 
         return bar and ok
@@ -116,7 +118,7 @@ def is_visible():
     en_vivo = EnVivo()
 
     if not en_vivo.is_visible:
-        stbt.press(RCU.OK.value)
+        stbt.press(RCU.OK)
         time.sleep(1)
 
     en_vivo = en_vivo.refresh()
@@ -172,23 +174,13 @@ def zap_to_ch(ch, unblock=True, pin=None):
 
     digit_list = [int(i) for i in str(ch)]
 
-    assert len(digit_list) <= 3, "Invalid number of digits. Must be 3 digits"
-    assert all(
-        isinstance(digit, int) for digit in digit_list
-    ), "All digits must be integers"
-    assert all(
-        0 <= digit <= 9 for digit in digit_list
-    ), "All digits must be in range 0-9"
+    assert len(digit_list) <= 3, "Invalid number of digits. Must be lowee than 4 digits"
 
     go_to_live()
 
     assert_screen()
 
-    converted_digit_list = _convert_ch_list(digit_list)
-
-    for index, digit in enumerate(converted_digit_list):
-        stbt.press(digit)
-        time.sleep(0.5)
+    send_num_rcu_keys(digit_list)
 
     time.sleep(5)
 
@@ -199,7 +191,7 @@ def zap_to_ch(ch, unblock=True, pin=None):
             "SUCCESS: TARGET CH {}, CURRENT CH {},".format(ch, get_channel_number())
         )
         stbt.press_and_wait(
-            RCU.EXIT.value,
+            RCU.EXIT,
             region=stbt.Region(310, 645, width=60, height=70),
             stable_secs=0.5,
         )
@@ -209,7 +201,7 @@ def zap_to_ch(ch, unblock=True, pin=None):
             "FAIL: TARGET CH {}, CURRENT CH {}".format(ch, get_channel_number())
         )
         stbt.press_and_wait(
-            RCU.EXIT.value,
+            RCU.EXIT,
             region=stbt.Region(310, 645, width=60, height=70),
             stable_secs=0.5,
         )
@@ -225,14 +217,11 @@ def go_to_live(unblock=True, pin=None):
         unblock (bool, optional): True if willing to try to unblock channel.
         Defaults to True.
         pin (list, optional): list of ints with pin (Ex: [1,1,1,1]). Defaults to None.
-
-    Raises:
-        ValueError: NOT_IN_SCREEN
     """
 
     if page_home.go_to_home():
         stbt.press_and_wait(
-            RCU.MENU.value,
+            RCU.MENU,
             region=stbt.Region(310, 645, width=60, height=70),
             stable_secs=0.5,
         )
@@ -253,7 +242,7 @@ def assert_motion():
         timeout_secs=10,
         consecutive_frames=None,
         noise_threshold=None,
-        mask=MOTION_MASK,
+        mask=Img.MOTION_MASK,
         frames=None,
     )
 
@@ -270,7 +259,7 @@ def _check_live_state(unblock, pin):
 
         elif _is_channel_bocked() and unblock is False:
             stbt.draw_text("Channel is blocked")
-            stbt.press_and_wait(RCU.EXIT.value)
+            stbt.press_and_wait(RCU.EXIT)
             assert_screen()
 
         else:
@@ -284,8 +273,3 @@ def _is_channel_bocked():
 def _unblock_channel(pin=None):
     page_pin.insert_pin(pin)
     return not page_pin.is_pin_incorrect()
-
-
-def _convert_ch_list(ch_list):
-    key = "NUMERIC_"
-    return [RCU[key + str(digit)].value for digit in ch_list]

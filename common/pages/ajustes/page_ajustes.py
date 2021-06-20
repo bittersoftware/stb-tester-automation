@@ -7,9 +7,6 @@ from common.exceptions import NotInScreen, NotFound
 from common.utils.get_time_and_date import GetTimeAndDate
 from common.utils.rcu import RCU
 
-# Relative path for images from ajustes
-IMAGES_DIR = "./images/ajustes_"
-
 # Lists to compose 2d matrix for Ajustes options
 AJUSTES_R1 = ["Modo de pantalla", "Dolby Audio", "Lanzar y ver", "Control parental"]
 AJUSTES_R2 = ["Bloqueo de canales", "PIN de compra", "PIN parental", "Ver mensajes"]
@@ -23,8 +20,13 @@ AJUSTES.append(AJUSTES_R2)
 AJUSTES.append(AJUSTES_R3)
 AJUSTES.append(AJUSTES_R4)
 
-# Error messages are
-NOT_IN_SCREEN = "Not in {}".format(__name__)
+
+class Img():
+    """List of reference images locators
+    """
+
+    LOGO = "./images/ajustes_logo.png"
+    SELECTED = "./images/ajustes_selection.png"
 
 
 class Ajustes(stbt.FrameObject):
@@ -47,8 +49,8 @@ class Ajustes(stbt.FrameObject):
     @property
     def is_visible(self):
         """Returns True if in Ajustes page"""
-        logo_img = IMAGES_DIR + "logo.png"
-        select_img = IMAGES_DIR + "selection.png"
+        logo_img = Img.LOGO
+        select_img = Img.SELECTED
 
         logo = stbt.match(
             logo_img,
@@ -109,7 +111,7 @@ def access_ajustes(item):
         time.sleep(1)
         if selected() == item:
             stbt.press_and_wait(
-                RCU.OK.value,
+                RCU.OK,
                 region=stbt.Region.ALL,
                 timeout_secs=3,
                 stable_secs=1,
@@ -120,7 +122,7 @@ def access_ajustes(item):
 
 
 def selected():
-    select_img = IMAGES_DIR + "selection.png"
+    select_img = Img.SELECTED
     selection = stbt.match(select_img, match_parameters=None)
     return stbt.ocr(
         region=selection.region,
@@ -159,14 +161,14 @@ def _aux_index_2d(item):
 def _matrix_nav(horizontal, vertical):
     if vertical > 0:
         for _ in range(vertical):
-            stbt.press(RCU.DOWN.value)
+            stbt.press(RCU.DOWN)
     else:
         for _ in range(abs(vertical)):
-            stbt.press(RCU.UP.value)
+            stbt.press(RCU.UP)
 
     if horizontal > 0:
         for _ in range(horizontal):
-            stbt.press(RCU.RIGHT.value)
+            stbt.press(RCU.RIGHT)
     else:
         for _ in range(abs(horizontal)):
-            stbt.press(RCU.LEFT.value)
+            stbt.press(RCU.LEFT)

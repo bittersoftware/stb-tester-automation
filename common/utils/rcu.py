@@ -1,11 +1,5 @@
-from enum import Enum
-
-
-class RCU(Enum):
-    """Enum with RCU commands list from lircd database
-
-    Args:
-        Enum (str): Key name
+class RCU():
+    """RCU commands list from lircd database
     """
 
     POWER = "KEY_POWER"

@@ -1,23 +1,21 @@
 # -*- coding: utf-8 -*-
-from enum import Enum
-
 import stbt
 from common.exceptions import NotInScreen
 from common.utils.rcu import RCU
 
 
 # Relative path for images from ajustes
-class Img(Enum):
+class Img():
     IMAGES_DIR = "./images/apps_"
     SELECTION = IMAGES_DIR + "selection.png"
 
 
-class App(Enum):
+class App():
     COVID = "./images/apps_covid.png"
     ATLETI = "./images/apps_atleti.png"
 
 
-class Category(Enum):
+class Category():
     COMPRAS = "Compras"
     DESTACADOS = "Destacados"
     ZONA_MOVISTAR = "Zona_Movistar"
@@ -62,7 +60,7 @@ class Apps(stbt.FrameObject):
         match_parameters = stbt.MatchParameters(confirm_method=None)
 
         selection = stbt.match(
-            Img.SELECTION.value,
+            Img.SELECTION,
             frame=self._frame,
             match_parameters=match_parameters,
             region=region2,
@@ -155,10 +153,10 @@ def navigate_to_category(category):
 
     assert_screen()
 
-    if not get_category() == category.value:
+    if not get_category() == category:
         for _ in range(len(Category)):
-            stbt.press_and_wait(RCU.DOWN.value, stable_secs=0.5)
-            if get_category() == category.value:
+            stbt.press_and_wait(RCU.DOWN, stable_secs=0.5)
+            if get_category() == category:
                 return True
         return False
 
@@ -173,8 +171,8 @@ def navigate_to_app(app):
     assert_screen()
 
     stbt.press_until_match(
-        RCU.RIGHT.value,
-        app.value,
+        RCU.RIGHT,
+        app,
         interval_secs=0.8,
         region=stbt.Region(80, 375, width=285, height=175),
     )

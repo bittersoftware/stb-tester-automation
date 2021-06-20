@@ -1,17 +1,13 @@
 # -*- coding: utf-8 -*-
 import re
-from enum import Enum
 
 import stbt
 from common.exceptions import Error, NotInScreen, NotFound, ArgumentNotValid
 from common.utils.rcu import RCU
 
 
-class Img(Enum):
-    """List of images
-
-    Args:
-        Enum (str): Holds path to image
+class Img():
+    """List of reference images locators
     """
 
     LOGO = "./images/covid_gobierno_logo.png"
@@ -49,7 +45,7 @@ class Covid(stbt.FrameObject):
         region = stbt.Region(85, 30, width=180, height=100)
 
         logo = stbt.match(
-            Img.LOGO.value, frame=self._frame, match_parameters=None, region=region
+            Img.LOGO, frame=self._frame, match_parameters=None, region=region
         )
 
         return logo
@@ -65,14 +61,14 @@ class Covid(stbt.FrameObject):
         region = stbt.Region(0, 510, width=1280, height=185)
 
         pill_left = stbt.match(
-            Img.PILL_LEFT.value,
+            Img.PILL_LEFT,
             frame=self._frame,
             match_parameters=None,
             region=region,
         )
 
         pill_right = stbt.match(
-            Img.PILL_RIGHT.value,
+            Img.PILL_RIGHT,
             frame=self._frame,
             match_parameters=None,
             region=region,
@@ -174,7 +170,7 @@ def get_splash_screen():
         boolean: returns True if the splash screen was found within 15 seconds
     """
     try:
-        stbt.wait_for_match(Img.SCREEN_SPLASH.value, timeout_secs=15)
+        stbt.wait_for_match(Img.SCREEN_SPLASH, timeout_secs=15)
     except stbt.MatchTimeout:
         return False
     else:
@@ -188,7 +184,7 @@ def get_initial_screen():
         boolean: returns True if the initial screen was found within 30 seconds
     """
     try:
-        stbt.wait_for_match(Img.SCREEN_INITIAL.value, timeout_secs=30)
+        stbt.wait_for_match(Img.SCREEN_INITIAL, timeout_secs=30)
     except stbt.MatchTimeout:
         return False
     else:
@@ -208,7 +204,7 @@ def select_pill(unicode_text, press_ok=True):
         exceptions.NotInScreen: if not in this page object screen is selected
         exceptions.NotFound: if item was not found.
     """
-    if type(unicode_text) != unicode:
+    if not isinstance(unicode_text, unicode):
         raise ArgumentNotValid
 
     page = assert_screen()
@@ -228,12 +224,12 @@ def select_pill(unicode_text, press_ok=True):
             )
 
             if press_ok:
-                stbt.press_and_wait(RCU.OK.value, stable_secs=0.5)
+                stbt.press_and_wait(RCU.OK, stable_secs=0.5)
                 return
             else:
                 return
         else:
-            stbt.press_and_wait(RCU.RIGHT.value, stable_secs=0.5)
+            stbt.press_and_wait(RCU.RIGHT, stable_secs=0.5)
 
         page.refresh()
         focused = get_focused_pill().lower()
@@ -249,27 +245,27 @@ def select_pill(unicode_text, press_ok=True):
 def select_option_yes():
     """Select option YES as answer"""
     stbt.press_until_match(
-        RCU.RIGHT.value,
-        Img.SI_OPT.value,
+        RCU.RIGHT,
+        Img.SI_OPT,
         interval_secs=0.5,
         max_presses=3,
         region=stbt.Region(125, 420, width=330, height=80),
     )
     stbt.draw_text("Select option: YES")
-    stbt.press_and_wait(RCU.OK.value, stable_secs=0.5)
+    stbt.press_and_wait(RCU.OK, stable_secs=0.5)
 
 
 def select_option_no():
     """Select option NO as answer"""
     stbt.press_until_match(
-        RCU.RIGHT.value,
-        Img.NO_OPT.value,
+        RCU.RIGHT,
+        Img.NO_OPT,
         interval_secs=0.5,
         max_presses=3,
         region=stbt.Region(125, 420, width=330, height=80),
     )
     stbt.draw_text("Select option: NO")
-    stbt.press_and_wait(RCU.OK.value, stable_secs=0.5)
+    stbt.press_and_wait(RCU.OK, stable_secs=0.5)
 
 
 def answer_all_questions(answers):
@@ -314,7 +310,7 @@ def assert_negative_diagnosis():
     assert_screen()
     assert stbt.wait_until(
         lambda: stbt.match(
-            Img.NEGATIVE_RESULT.value,
+            Img.NEGATIVE_RESULT,
             region=stbt.Region(95, 110, width=590, height=190),
         )
     )
@@ -324,7 +320,7 @@ def assert_positive_diagnosis():
     assert_screen()
     assert stbt.wait_until(
         lambda: stbt.match(
-            Img.POSITIVE_RESULT.value,
+            Img.POSITIVE_RESULT,
             region=stbt.Region(95, 110, width=590, height=190),
         )
     )
