@@ -43,9 +43,7 @@ class Covid(stbt.FrameObject):
 
         region = stbt.Region(85, 30, width=180, height=100)
 
-        logo = stbt.match(
-            Img.LOGO, frame=self._frame, region=region
-        )
+        logo = stbt.match(Img.LOGO, frame=self._frame, region=region)
 
         return logo
 
@@ -53,6 +51,9 @@ class Covid(stbt.FrameObject):
     def focused_pill(self):
         """Returns ascii string for focused pills
         Does not consider as pill the options SI/NO of the questions asked
+
+        Since pills vary in horizontal size, we detect left and right edges,
+        then make a bounding_box to get the pill region and perform OCR
 
         Returns:
             string: Focused text in ascii. No special characters. None if no pill
@@ -75,12 +76,12 @@ class Covid(stbt.FrameObject):
             return None
 
         pill_region = stbt.Region.bounding_box(pill_left.region, pill_right.region)
-        """
-        For some reason, tesseract does not read well when there is only one work
-         in this capture
-        Cropped pill_region in order to have single color background instead of
-         showing the pills' borders.
-        """
+
+        # For some reason, tesseract does not read well when there is only one word
+        # in this capture
+        # Cropped pill_region in order to have single color background instead of
+        # showing the pills' borders.
+
         pill_croped = pill_region.extend(x=24, y=6, right=-25, bottom=-6)
 
         return stbt.ocr(
@@ -153,7 +154,7 @@ def get_current_question_number():
     try:
         num = re.findall(r"\d{1}", num_raw)[0]
         num = int(num)
-    except Exception:
+    except ValueError:
         return None
     else:
         stbt.draw_text("Question: {}".format(str(num)))
@@ -285,9 +286,7 @@ def answer_all_questions(answers):
     if not len(answers) == NUMBER_OF_QUESTIONS:
         raise ArgumentNotValid
 
-    question = 1
-
-    for answer in answers:
+    for question, answer in enumerate(answers, start=1):
         if answer == 0:
             select_option_no()
         else:
@@ -300,10 +299,11 @@ def answer_all_questions(answers):
             question <= NUMBER_OF_QUESTIONS
             and question != get_current_question_number()
         ):
-            raise Error
+            raise Error("Mismatch between current/expected question number")
 
 
 def assert_negative_diagnosis():
+    """Detect screen for negative diagnosis"""
     assert_screen()
     assert stbt.wait_until(
         lambda: stbt.match(
@@ -314,6 +314,7 @@ def assert_negative_diagnosis():
 
 
 def assert_positive_diagnosis():
+    """Detect screen for positive diagnosis"""
     assert_screen()
     assert stbt.wait_until(
         lambda: stbt.match(
