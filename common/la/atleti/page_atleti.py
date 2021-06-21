@@ -54,7 +54,7 @@ class Atleti(stbt.FrameObject):
         region = stbt.Region(95, 35, width=135, height=100)
 
         logo = stbt.match(
-            Img.LOGO, frame=self._frame, match_parameters=None, region=region
+            Img.LOGO, frame=self._frame, region=region
         )
 
         return logo
@@ -62,7 +62,8 @@ class Atleti(stbt.FrameObject):
     @property
     def is_pill_selected(self):
         """Returns ascii string for focused pills
-        Does not consider as pill the options SI/NO of the questions asked
+        Returns the name of the pill based on the path name
+        Converts: "./images/atleti_pill_entrevista.png" to "PILL_ENTREVISTA"
 
         Returns:
             string: Focused text in ascii. No special characters. None if no pill
@@ -78,9 +79,9 @@ class Atleti(stbt.FrameObject):
 
         for pill in pills:
             if stbt.match(
-                pill, frame=self._frame, match_parameters=None, region=region
+                pill, frame=self._frame, region=region
             ):
-                return pill.name
+                return pill
 
         return False
 
@@ -95,21 +96,6 @@ def is_visible():
     return page.is_visible
 
 
-def get_initial_screen():
-    """Wait for the initial screen to appear.
-
-    Returns:
-        boolean: returns True if the initial screen was found within 30 seconds
-    """
-    try:
-        stbt.wait_for_match(Img.SCREEN_INITIAL, timeout_secs=30)
-    except stbt.MatchTimeout:
-        return False
-    else:
-
-        return True
-
-
 def assert_screen():
     """Raises Exception if not in Atleti
 
@@ -121,6 +107,20 @@ def assert_screen():
         return page
     else:
         raise NotInScreen(__name__)
+
+
+def get_initial_screen():
+    """Wait for the initial screen to appear.
+
+    Returns:
+        boolean: returns True if the initial screen was found within 30 seconds
+    """
+    try:
+        stbt.wait_for_match(Img.SCREEN_INITIAL, timeout_secs=30)
+    except stbt.MatchTimeout:
+        return False
+    else:
+        return True
 
 
 def get_selected_pill():
@@ -144,6 +144,9 @@ def get_splash_screen():
 
 def select_pill(pill, change_dir=False):
     """Navigate right until find target pill
+    If not found, tries again pressing LEFT KEY
+    The second run is necessary if we want to select first element,
+    but the second is focused. It will match on the way back
 
     Args:
         pill ([Enum]): [Img.PILL_RESUMEN, Img.PILL_ENTREVISTA,
@@ -178,7 +181,6 @@ def is_continue_popup():
     """
     return stbt.match(
         Img.CONTINUAR,
-        match_parameters=None,
         region=stbt.Region(260, 165, width=755, height=220),
     )
 
@@ -219,6 +221,19 @@ def detected_movement():
 
 
 def wait_end_of_video(timeout_secs=120, pool_interval=3):
+    """Waits for the end of the video. Assumes video is finished by
+    getting a frame waiting for the pool interval then getting a
+    second frame and comparing with first one.
+
+    Args:
+        timeout_secs (int, optional): max time to check if video is finished.
+         Defaults to 120.
+        pool_interval (int, optional): time intervall to check if frame does not change.
+         Defaults to 3.
+
+    Raises:
+        TimeoutError: Excepction if timeout is reached before detect end of video
+    """
     start_time = time.time()
 
     while time.time() - start_time < timeout_secs:
