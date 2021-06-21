@@ -9,9 +9,8 @@ from common.utils.get_time_and_date import GetTimeAndDate
 from common.utils.rcu import RCU
 
 
-class Img():
-    """List of reference images locators
-    """
+class Img:
+    """List of reference images locators"""
 
     PAGE_TITLE = "./images/guia_page_title.png"
     LOGO = "./images/guia_logo.png"
@@ -28,8 +27,13 @@ class Img():
     PARENTAL_18 = "./images/guia_parental_18.png"
 
 
-parental_list = [Img.PARENTAL_TP, Img.PARENTAL_07,
-                 Img.PARENTAL_12, Img.PARENTAL_16, Img.PARENTAL_18]
+parental_list = [
+    Img.PARENTAL_TP,
+    Img.PARENTAL_07,
+    Img.PARENTAL_12,
+    Img.PARENTAL_16,
+    Img.PARENTAL_18,
+]
 
 
 class Guide(stbt.FrameObject):
@@ -59,8 +63,9 @@ class Guide(stbt.FrameObject):
             Img.PAGE_TITLE, frame=self._frame, match_parameters=None, region=region
         )
 
-        logo = stbt.match(Img.LOGO, frame=self._frame,
-                          match_parameters=None, region=region)
+        logo = stbt.match(
+            Img.LOGO, frame=self._frame, match_parameters=None, region=region
+        )
 
         return title and logo
 

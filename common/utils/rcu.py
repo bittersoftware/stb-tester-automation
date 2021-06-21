@@ -1,6 +1,5 @@
-class RCU():
-    """RCU commands list from lircd database
-    """
+class RCU:
+    """RCU commands list from lircd database"""
 
     POWER = "KEY_POWER"
     MENU = "KEY_MENU"

@@ -4,9 +4,8 @@ from common.utils.navigation_utils import send_num_rcu_keys
 from common.exceptions import NotInScreen
 
 
-class Img():
-    """List of reference images locators
-    """
+class Img:
+    """List of reference images locators"""
 
     PIN_FOCUS = "./images/pin_box_focused.png"
     PIN_NOT_FOCUS = "./images/pin_box_not_focused.png"

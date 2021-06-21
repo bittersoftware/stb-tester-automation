@@ -12,9 +12,8 @@ from common.utils.rcu import RCU
 from common.utils.navigation_utils import send_num_rcu_keys
 
 
-class Img():
-    """List of reference images locators
-    """
+class Img:
+    """List of reference images locators"""
 
     MINIGUIDE = "./images/en_vivo_mini_guide.png"
     PROGRESS_BAR = "./images/en_vivo_progress_bar.png"
@@ -37,8 +36,13 @@ class Img():
     MOTION_MASK = "./images/en_vivo_motion_mask.png"
 
 
-parental_list = [Img.PARENTAL_TP, Img.PARENTAL_07,
-                 Img.PARENTAL_12, Img.PARENTAL_16, Img.PARENTAL_18]
+parental_list = [
+    Img.PARENTAL_TP,
+    Img.PARENTAL_07,
+    Img.PARENTAL_12,
+    Img.PARENTAL_16,
+    Img.PARENTAL_18,
+]
 
 
 class EnVivo(stbt.FrameObject):

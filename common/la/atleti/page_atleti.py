@@ -6,9 +6,8 @@ from common.exceptions import NotInScreen, TimeoutError
 from common.utils.rcu import RCU
 
 
-class Img():
-    """List of reference images locators
-    """
+class Img:
+    """List of reference images locators"""
 
     SCREEN_SPLASH = "./images/atleti_splash_screen.png"
     SCREEN_INITIAL = "./images/atleti_initial_screen.png"

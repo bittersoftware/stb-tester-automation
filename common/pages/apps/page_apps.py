@@ -5,17 +5,17 @@ from common.utils.rcu import RCU
 
 
 # Relative path for images from ajustes
-class Img():
+class Img:
     IMAGES_DIR = "./images/apps_"
     SELECTION = IMAGES_DIR + "selection.png"
 
 
-class App():
+class App:
     COVID = "./images/apps_covid.png"
     ATLETI = "./images/apps_atleti.png"
 
 
-class Category():
+class Category:
     COMPRAS = "Compras"
     DESTACADOS = "Destacados"
     ZONA_MOVISTAR = "Zona_Movistar"

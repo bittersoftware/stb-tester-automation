@@ -126,12 +126,8 @@ class GetTestScope:
         for test_case in test_scope:
             if not all(key in test_case for key in keys):
                 logger.error("Tests feched does not follow the expected")
-                logger.error(
-                    "Expected list of test case objects:"
-                )
-                logger.error(
-                    "{{'id': 'TC-2', 'summary': 'Test 2 summary'}}"
-                )
+                logger.error("Expected list of test case objects:")
+                logger.error("{{'id': 'TC-2', 'summary': 'Test 2 summary'}}")
                 logger.error(f"Got: {test_scope}")  # noqa: E999
                 return None
 

@@ -20,7 +20,7 @@ CANCEL_CONFIRMATION = IMAGES_DIR + "cancel_selected.png"
 MAX_CHANNELS = 85
 
 
-class CaptureElement():
+class CaptureElement:
     """Options to capture elements in block screen. Used by _preliminar_region()"""
 
     CH_NUMBER = 0

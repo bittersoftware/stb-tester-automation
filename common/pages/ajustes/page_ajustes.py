@@ -21,9 +21,8 @@ AJUSTES.append(AJUSTES_R3)
 AJUSTES.append(AJUSTES_R4)
 
 
-class Img():
-    """List of reference images locators
-    """
+class Img:
+    """List of reference images locators"""
 
     LOGO = "./images/ajustes_logo.png"
     SELECTED = "./images/ajustes_selection.png"

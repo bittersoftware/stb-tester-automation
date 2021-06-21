@@ -6,9 +6,8 @@ from common.exceptions import Error, NotInScreen, NotFound, ArgumentNotValid
 from common.utils.rcu import RCU
 
 
-class Img():
-    """List of reference images locators
-    """
+class Img:
+    """List of reference images locators"""
 
     LOGO = "./images/covid_gobierno_logo.png"
     PILL_LEFT = "./images/covid_pill_left.png"

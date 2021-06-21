@@ -4,7 +4,7 @@ PatternType = type(re.compile(""))
 
 
 def apply_ocr_corrections(text, corrections=None):
-    """ This method is available on v32 that was not released in apt packages
+    """This method is available on v32 that was not released in apt packages
     Method copied from stbt repository to use it locally
 
     Applies the same corrections as `stbt.ocr`'s ``corrections`` parameter.

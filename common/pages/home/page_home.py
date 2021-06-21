@@ -5,9 +5,8 @@ from common.utils.rcu import RCU
 from common.exceptions import NotInScreen
 
 
-class Img():
-    """List of reference images locators
-    """
+class Img:
+    """List of reference images locators"""
 
     LOGO = "./images/movistar_logo_transparent.png"
     DOTS = "./images/dots.png"
