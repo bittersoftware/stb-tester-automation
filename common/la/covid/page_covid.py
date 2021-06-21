@@ -44,7 +44,7 @@ class Covid(stbt.FrameObject):
         region = stbt.Region(85, 30, width=180, height=100)
 
         logo = stbt.match(
-            Img.LOGO, frame=self._frame, match_parameters=None, region=region
+            Img.LOGO, frame=self._frame, region=region
         )
 
         return logo
@@ -62,14 +62,12 @@ class Covid(stbt.FrameObject):
         pill_left = stbt.match(
             Img.PILL_LEFT,
             frame=self._frame,
-            match_parameters=None,
             region=region,
         )
 
         pill_right = stbt.match(
             Img.PILL_RIGHT,
             frame=self._frame,
-            match_parameters=None,
             region=region,
         )
 
