@@ -19,9 +19,6 @@ CANCEL_CONFIRMATION = IMAGES_DIR + "cancel_selected.png"
 # Max channel reference for loop through channels' list
 MAX_CHANNELS = 85
 
-# Error Messages
-NOT_IN_SCREEN = "Not in {}".format(__name__)
-
 
 class CaptureElement():
     """Options to capture elements in block screen. Used by _preliminar_region()"""

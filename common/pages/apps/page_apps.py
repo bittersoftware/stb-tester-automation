@@ -25,10 +25,6 @@ class Category():
     EMPRENDEDORES = "Emprendedores"
 
 
-# Error messages
-NOT_IN_SCREEN = "Not in {}".format(__name__)
-
-
 class Apps(stbt.FrameObject):
     """Page Object for Apps
 
