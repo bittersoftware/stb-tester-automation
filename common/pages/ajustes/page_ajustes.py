@@ -54,11 +54,10 @@ class Ajustes(stbt.FrameObject):
         logo = stbt.match(
             logo_img,
             frame=self._frame,
-            match_parameters=None,
             region=stbt.Region(1125, 25, width=115, height=65),
         )
 
-        selection = stbt.match(select_img, frame=self._frame, match_parameters=None)
+        selection = stbt.match(select_img, frame=self._frame)
 
         return logo and selection
 
@@ -86,29 +85,31 @@ def assert_screen():
         raise NotInScreen(__name__)
 
 
-def access_ajustes(item):
+def access_ajustes(target_item):
     """Access Ajustes item from the ones defined in AJUSTES 2d matrix
        Finds current selected element indexes
        Finds target element indexes
        Subtract both elements to find needed RCU commands to reach target
 
     Args:
-        item ([string]): [key from AJUSTES 2d matrix]
+        target_item ([string]): [key from AJUSTES 2d matrix]
     """
     if is_visible():
         selected_item = selected()
-        stbt.draw_text("Navigating to {} from {}".format(item, selected_item))
-        selected_index = _aux_index_2d(selected_item)
-        target_index = _aux_index_2d(item)
+        stbt.draw_text("Navigating to {} from {}".format(target_item, selected_item))
+
+        selected_index = _aux_get_2d_index(selected_item)
+        target_index = _aux_get_2d_index(target_item)
+
         directions = np.subtract(target_index, selected_index)
-        print(directions)
+
         vertical = directions[0]
         horizontal = directions[1]
 
         _matrix_nav(horizontal, vertical)
 
         time.sleep(1)
-        if selected() == item:
+        if selected() == target_item:
             stbt.press_and_wait(
                 RCU.OK,
                 region=stbt.Region.ALL,
@@ -121,8 +122,13 @@ def access_ajustes(item):
 
 
 def selected():
+    """Returns text of focused element in scree
+
+    Returns:
+        str: text from selected item menu
+    """
     select_img = Img.SELECTED
-    selection = stbt.match(select_img, match_parameters=None)
+    selection = stbt.match(select_img)
     return stbt.ocr(
         region=selection.region,
         text_color=(255, 249, 182),
@@ -143,7 +149,15 @@ def get_time_and_date():
     return t.time_and_date_parsed
 
 
-def _aux_index_2d(item):
+def _aux_get_2d_index(item):
+    """Returns tuple with index of 2d matrix for menu disposition
+
+    Args:
+        item (str): item
+
+    Returns:
+        tuple: i, j index for 2d matrix in which this item is placed
+    """
     for i, e in enumerate(AJUSTES):
         try:
             return i, e.index(item)
@@ -158,6 +172,12 @@ def _aux_index_2d(item):
 
 
 def _matrix_nav(horizontal, vertical):
+    """Navigates towards desired item in the 2d matrix menu
+
+    Args:
+        horizontal (int): number of horizontal movements
+        vertical (int): number of vertical movements
+    """
     if vertical > 0:
         for _ in range(vertical):
             stbt.press(RCU.DOWN)
