@@ -53,9 +53,7 @@ class Atleti(stbt.FrameObject):
 
         region = stbt.Region(95, 35, width=135, height=100)
 
-        logo = stbt.match(
-            Img.LOGO, frame=self._frame, region=region
-        )
+        logo = stbt.match(Img.LOGO, frame=self._frame, region=region)
 
         return logo
 
@@ -78,9 +76,7 @@ class Atleti(stbt.FrameObject):
         ]
 
         for pill in pills:
-            if stbt.match(
-                pill, frame=self._frame, region=region
-            ):
+            if stbt.match(pill, frame=self._frame, region=region):
                 return pill
 
         return False
