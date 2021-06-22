@@ -6,6 +6,8 @@ from common.utils.rcu import RCU
 
 # Relative path for images from ajustes
 class Img:
+    """List of reference images locators"""
+
     IMAGES_DIR = "./images/apps_"
     SELECTION = IMAGES_DIR + "selection.png"
 
