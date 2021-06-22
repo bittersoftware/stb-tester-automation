@@ -19,7 +19,7 @@ def test_main():
     repeat = 20
 
     for i in range(repeat):
-        # Open LA
+        # Open Living App
         page_home.go_to_home()
         page_home.access_menu("APPS")
         page_apps.navigate_to_app(App.COVID)
@@ -42,6 +42,7 @@ def test_main():
     with open("splash.json", "w") as f:
         json.dump({"splash": splash}, f)
 
+    # Counts how incidences of splash screen displayed/not displayed
     result = dict(Counter(splash))
 
     print("Result: {}".format(result))

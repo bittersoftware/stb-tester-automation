@@ -20,7 +20,7 @@ def test_main():
     repeat = 15
 
     for i in range(repeat):
-        # Open LA
+        # Open Living App
         page_home.go_to_home()
         page_home.access_menu("APPS")
         page_apps.navigate_to_app(App.ATLETI)

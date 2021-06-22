@@ -12,5 +12,7 @@ def test_main():
     page_en_vivo.zap_to_ch(CHANNEL, unblock=False)
     # 2. Confirm is blocked
     assert page_pin.is_visible()
+    # 3. Insert PIN
     page_pin.insert_pin()
+    # 4. Confirm channel is unblocked - motion
     assert page_en_vivo.assert_motion()
