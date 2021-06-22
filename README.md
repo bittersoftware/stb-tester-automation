@@ -5,11 +5,11 @@ Demo project with stb-tester that runs test case scenarios for Movistar+ decoder
 These test cases run with a test manager that is no present inside this code due to be private code.
 
 * [Page Object Model](#page-object-model)
-* [Page Object Classes](page-object-classes)
-* [Test Case Scenarios](test-cases-scenarios)
+* [Page Object Classes](#page-object-classes)
+* [Test Case Scenarios and Results](#test-case-scenarios)
 
 
-##  Page Object Model:
+##  Page Object Model
 The project is made using Page Object Model, creating an unique class for each menu screen
 The page objects are present inside the ```common``` directory following the pattern bellow:
 ```
@@ -33,7 +33,7 @@ The page objects are present inside the ```common``` directory following the pat
       ├── plot.py
       └── rcu.py
  ```
- ##  Page Object Classes:
+ ##  Page Object Classes
 The classes for the Page Objects follow the structure bellow. The aim is to define properties of static elements inside the class and then implement mehtods that instantiate the class and perform the desired actions in each page, so there is no need to isntantiate any class inside the test cases.
 ```python
 import stbt
@@ -100,25 +100,25 @@ def perform_some_action():
     # do something
 ```
 
-##  Test Case Scenarios:
-1. TC-1: Block live channel
+##  Test Case Scenarios
+1. TC-1: Block live channel - [video](https://youtu.be/1Q1WcNrqEow)
 2. TC-2: Unblock live channel
-3. TC-3: Get event metadata from EPG
-4. TC-4: Splash screen for COVID Living App
-5. TC-5: Reply quiz for COVID
-6. TC-6: KPI for opening Living App: Atletico de Madrid
+3. TC-3: Get event metadata from EPG - [video](https://youtu.be/ci8N95PuhzA) - [files](https://drive.google.com/drive/folders/1ZwVJssdKgyCIasFFw4b4lQqFY1KL3OpJ?usp=sharing)
+4. TC-4: Splash screen for COVID Living App - [video](https://youtu.be/zl11btFt9FI) - [files](https://drive.google.com/drive/folders/1vNHh3P3u8ymFxEVGImSyTVAkDlHp_MTq?usp=sharing)
+5. TC-5: Reply quiz for COVID - [video](https://youtu.be/Vtn5wIbvnUs)
+6. TC-6: KPI for opening Living App: Atletico de Madrid - [video](https://youtu.be/19jJDsqOks4) - [files](https://drive.google.com/drive/folders/15p7-u2DKkVzT4S6qVb2LPjBaCL8E8CJd?usp=sharing)
 7. TC-7: Validates all options have a video stream
-8. TC-8: Validates Adaptive Bitstream profile from MPEG-DASH video 
-9. TC-9: KPI for opening Living App: Asistente COVID
-10. TC-10: Fast Channel Change network capture (Unicast UDP) 
+8. TC-8: Validates Adaptive Bitstream profile from MPEG-DASH video - [video](https://youtu.be/scA_RGUPmL8) - [files](https://drive.google.com/drive/folders/1JnqFJp48KAvsV34_gy-C0Dx9WSHMSj-4?usp=sharing)
+9. TC-9: KPI for opening Living App: Asistente COVID - [video](https://youtu.be/QM0bFDE9jzc) - [file](https://drive.google.com/drive/folders/17-VdV0-OkQyBhhDpVuLHbNOwRMirZlPV?usp=sharing)
+10. TC-10: Fast Channel Change network capture (Unicast UDP) - [files](https://drive.google.com/drive/folders/1oe7RwRs9CfAijnQcZ9iDr3eqBo1qWUVD?usp=sharing)
 11. TC-12: Zapping Endurance 10s for 6 hours
 
-Note: TC-8 and TC-10 uses an external package to analyze and generate charts for network capture in real time
+> Note: TC-8 and TC-10 uses an external package to analyze and generate charts for network capture in real time
 This code is private property and can't be shared
 
 
-##  Device Access:
+##  Device Access
 Mock module to implement device access to decoder through SSH/Telnet/RESTAPI/etc
 
-##  Test Management:
+##  Test Management
 Mock module to implement test plan access through JIRA/csv/etc
