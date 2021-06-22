@@ -9,12 +9,15 @@ from common.utils.get_time_and_date import GetTimeAndDate
 from common.utils.ocr_corrections import apply_ocr_corrections
 from common.utils.rcu import RCU
 
-# Relative path for images from bloqueo de canales
-IMAGES_DIR = "./images/bloqueo_de_canales_"
-FOCUSED_NUMBER = IMAGES_DIR + "focused.png"
-BLOCKED_ICON = IMAGES_DIR + "blocked_icon.png"
-ACCPEPT_CONFIRMATION = IMAGES_DIR + "accept_selected.png"
-CANCEL_CONFIRMATION = IMAGES_DIR + "cancel_selected.png"
+
+class Img:
+    """List of reference images locators"""
+
+    FOCUSED_NUMBER = "./images/bloqueo_de_canales_focused.png"
+    BLOCKED_ICON = "./images/bloqueo_de_canales_blocked_icon.png"
+    ACCPEPT_CONFIRMATION = "./images/bloqueo_de_canales_accept_selected.png"
+    CANCEL_CONFIRMATION = "./images/bloqueo_de_canales_cancel_selected.png"
+
 
 # Max channel reference for loop through channels' list
 MAX_CHANNELS = 85
@@ -69,7 +72,7 @@ class BlockChannels(stbt.FrameObject):
         Returns:
             [int]: channel number
         """
-        region = _preliminar_region(FOCUSED_NUMBER, CaptureElement.CH_NUMBER)
+        region = _preliminar_region(Img.FOCUSED_NUMBER, CaptureElement.CH_NUMBER)
 
         if region:
             channel = stbt.ocr(
@@ -192,8 +195,8 @@ def confirm_changes_popup(save_changes=True):
     region = stbt.Region(515, 390, width=245, height=75)
 
     if not stbt.wait_until(
-        lambda: stbt.match(ACCPEPT_CONFIRMATION, region=region)
-        or stbt.match(CANCEL_CONFIRMATION, region=region),
+        lambda: stbt.match(Img.ACCPEPT_CONFIRMATION, region=region)
+        or stbt.match(Img.CANCEL_CONFIRMATION, region=region),
         timeout_secs=0.5,
     ):
         stbt.press_and_wait(RCU.EXIT, stable_secs=0.5)
@@ -203,12 +206,12 @@ def confirm_changes_popup(save_changes=True):
 
     if save_changes:
         stbt.press_until_match(
-            RCU.RIGHT, ACCPEPT_CONFIRMATION, interval_secs=1, max_presses=3
+            RCU.RIGHT, Img.ACCPEPT_CONFIRMATION, interval_secs=1, max_presses=3
         )
         stbt.press_and_wait(RCU.OK, stable_secs=0.5)
     else:
         stbt.press_until_match(
-            RCU.RIGHT, CANCEL_CONFIRMATION, interval_secs=1, max_presses=3
+            RCU.RIGHT, Img.CANCEL_CONFIRMATION, interval_secs=1, max_presses=3
         )
         stbt.press_and_wait(RCU.OK, stable_secs=0.5)
 
@@ -216,7 +219,7 @@ def confirm_changes_popup(save_changes=True):
 
 
 def _preliminar_region(img, target=CaptureElement.CH_NUMBER):
-    """Auxiliar function to fin focused channel based in image recognition
+    """Auxiliar function to find focused channel based in image recognition
     of the blue color channel
 
     Args:
@@ -271,7 +274,7 @@ def _preliminar_region(img, target=CaptureElement.CH_NUMBER):
 
 
 def _channel_name():
-    region = _preliminar_region(FOCUSED_NUMBER, target=CaptureElement.CH_NAME)
+    region = _preliminar_region(Img.FOCUSED_NUMBER, target=CaptureElement.CH_NAME)
 
     if region:
         return stbt.ocr(
@@ -283,11 +286,11 @@ def _channel_name():
 
 
 def _is_blocked():
-    region = _preliminar_region(FOCUSED_NUMBER, target=CaptureElement.BLOCKED_ICON)
+    region = _preliminar_region(Img.FOCUSED_NUMBER, target=CaptureElement.BLOCKED_ICON)
 
     if region:
         return stbt.match(
-            BLOCKED_ICON,
+            Img.BLOCKED_ICON,
             region=stbt.Region(region[0], region[1], width=region[2], height=region[3]),
         )
 
