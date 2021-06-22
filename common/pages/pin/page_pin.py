@@ -39,13 +39,9 @@ class Pin(stbt.FrameObject):
 
         region = stbt.Region(475, 335, width=315, height=80)
 
-        box_1 = stbt.match(
-            Img.PIN_FOCUS, frame=self._frame, region=region
-        )
+        box_1 = stbt.match(Img.PIN_FOCUS, frame=self._frame, region=region)
 
-        box_2 = stbt.match(
-            Img.PIN_NOT_FOCUS, frame=self._frame, region=region
-        )
+        box_2 = stbt.match(Img.PIN_NOT_FOCUS, frame=self._frame, region=region)
 
         return box_1 and box_2
 

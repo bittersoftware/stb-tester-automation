@@ -59,13 +59,9 @@ class Guide(stbt.FrameObject):
 
         region = stbt.Region(0, 0, width=1280, height=100)
 
-        title = stbt.match(
-            Img.PAGE_TITLE, frame=self._frame, region=region
-        )
+        title = stbt.match(Img.PAGE_TITLE, frame=self._frame, region=region)
 
-        logo = stbt.match(
-            Img.LOGO, frame=self._frame, region=region
-        )
+        logo = stbt.match(Img.LOGO, frame=self._frame, region=region)
 
         return title and logo
 

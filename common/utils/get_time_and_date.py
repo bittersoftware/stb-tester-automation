@@ -55,7 +55,7 @@ class GetTimeAndDate:
 
     @property
     def time_and_date_parsed(self):
-        """ Formats start and end time captured through OCR
+        """Formats start and end time captured through OCR
 
         Example: "9 feb 12:52" or "21 mar 01:20"
 

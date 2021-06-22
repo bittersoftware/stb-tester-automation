@@ -70,13 +70,9 @@ class EnVivo(stbt.FrameObject):
 
         region2 = stbt.Region(308, 640, width=660, height=75)
 
-        bar = stbt.match(
-            Img.ROGRESS_BAR, frame=self._frame, region=region1
-        )
+        bar = stbt.match(Img.ROGRESS_BAR, frame=self._frame, region=region1)
 
-        ok = stbt.match(
-            Img.OK_ICON, frame=self._frame, region=region2
-        )
+        ok = stbt.match(Img.OK_ICON, frame=self._frame, region=region2)
 
         return bar and ok
 
