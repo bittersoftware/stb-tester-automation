@@ -60,14 +60,12 @@ class Home(stbt.FrameObject):
         logo = stbt.match(
             logo_img,
             frame=self._frame,
-            match_parameters=None,
             region=stbt.Region(58, 25, width=120, height=70),
         )
 
         dots = stbt.match(
             dots_img,
             frame=self._frame,
-            match_parameters=None,
             region=stbt.Region(0, 478, width=158, height=138),
         )
 
@@ -128,7 +126,6 @@ def access_menu(item):
             MENU[item],
             interval_secs=0.8,
             max_presses=len(MENU),
-            match_parameters=None,
             region=stbt.Region(10, 350, width=270, height=90),
         )
     except Exception:

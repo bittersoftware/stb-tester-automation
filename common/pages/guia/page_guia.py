@@ -60,11 +60,11 @@ class Guide(stbt.FrameObject):
         region = stbt.Region(0, 0, width=1280, height=100)
 
         title = stbt.match(
-            Img.PAGE_TITLE, frame=self._frame, match_parameters=None, region=region
+            Img.PAGE_TITLE, frame=self._frame, region=region
         )
 
         logo = stbt.match(
-            Img.LOGO, frame=self._frame, match_parameters=None, region=region
+            Img.LOGO, frame=self._frame, region=region
         )
 
         return title and logo
@@ -92,7 +92,6 @@ class Guide(stbt.FrameObject):
             if stbt.match(
                 parental,
                 frame=self._frame,
-                match_parameters=None,
                 region=stbt.Region(1080, 530, width=190, height=180),
             ):
                 return re.findall(r"\d{1,2}|TP", parental)[0]
@@ -110,7 +109,6 @@ class Guide(stbt.FrameObject):
             stbt.match(
                 Img.HD_ICON,
                 frame=self._frame,
-                match_parameters=None,
                 region=stbt.Region(1080, 530, width=190, height=180),
             )
         ).match
@@ -126,7 +124,6 @@ class Guide(stbt.FrameObject):
             stbt.match(
                 Img.DOLBY_ICON,
                 frame=self._frame,
-                match_parameters=None,
                 region=stbt.Region(1080, 530, width=190, height=180),
             )
         ).match
@@ -164,7 +161,6 @@ class Guide(stbt.FrameObject):
         if stbt.match(
             Img.PROGRESS_BAR,
             frame=self._frame,
-            match_parameters=None,
             region=stbt.Region(405, 595, width=25, height=45),
         ):
 
@@ -291,6 +287,19 @@ def get_time_and_date():
 
 
 def _format_time(time_raw):
+    """Formats start and end time captured through OCR
+    Due to OCR misreading text, we are handling the possible outputa cases:
+    len(5) = "12:35"
+    len(4) = "1235"
+
+    Sometimes the ":" is not detected, so we slice the str accordingly the output
+
+    Args:
+        time_raw (str): time raw
+
+    Returns:
+        dict: containing "hour" and "minute" keys
+    """
     time = (re.findall("[0-9]{1,2}.[0-9]{2}$", time_raw))[0]
 
     if len(time) == 5:

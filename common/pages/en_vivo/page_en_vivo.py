@@ -71,11 +71,11 @@ class EnVivo(stbt.FrameObject):
         region2 = stbt.Region(308, 640, width=660, height=75)
 
         bar = stbt.match(
-            Img.ROGRESS_BAR, frame=self._frame, match_parameters=None, region=region1
+            Img.ROGRESS_BAR, frame=self._frame, region=region1
         )
 
         ok = stbt.match(
-            Img.OK_ICON, frame=self._frame, match_parameters=None, region=region2
+            Img.OK_ICON, frame=self._frame, region=region2
         )
 
         return bar and ok
@@ -91,7 +91,6 @@ class EnVivo(stbt.FrameObject):
             if stbt.match(
                 parental,
                 frame=self._frame,
-                match_parameters=None,
                 region=stbt.Region(244, 470, width=750, height=70),
             ):
                 return re.findall(r"\d{1,2}|TP", parental)[0]
@@ -242,6 +241,11 @@ def get_channel_number():
 
 
 def assert_motion():
+    """Check if there is motion in screen to confirm live ch is playing
+
+    Returns:
+        MotionResult: contains bool variable "motion"
+    """
     return stbt.wait_for_motion(
         timeout_secs=10,
         consecutive_frames=None,
@@ -252,16 +256,25 @@ def assert_motion():
 
 
 def _check_live_state(unblock, pin):
+    """Handles if channel is blocked before checking live screen
+
+    Args:
+        unblock (bool): True if we want to unblock channel if it is blocked
+        pin (list): 4-digit int PIN
+
+    Raises:
+        NotInScreen: If not in Live screen
+    """
     try:
         assert_screen()
     except NotInScreen:
-        if _is_channel_bocked() and unblock is True:
+        if _is_channel_blocked() and unblock is True:
             stbt.draw_text("Channel is blocked")
             if not _unblock_channel(pin):
                 raise NotInScreen(__name__)
             assert_screen()
 
-        elif _is_channel_bocked() and unblock is False:
+        elif _is_channel_blocked() and unblock is False:
             stbt.draw_text("Channel is blocked")
             stbt.press_and_wait(RCU.EXIT)
             assert_screen()
@@ -270,10 +283,23 @@ def _check_live_state(unblock, pin):
             raise NotInScreen(__name__)
 
 
-def _is_channel_bocked():
+def _is_channel_blocked():
+    """Check if channel is blocked using Page Pin class
+
+    Returns:
+        True: if blocked. Flase otherwise
+    """
     return True if page_pin.is_visible() else False
 
 
 def _unblock_channel(pin=None):
+    """Access Page Pin to unblock channel
+
+    Args:
+        pin (list, optional): 4-digit int list. Defaults to None.
+
+    Returns:
+        [bool]: True if unblocked, False otherwise
+    """
     page_pin.insert_pin(pin)
     return not page_pin.is_pin_incorrect()

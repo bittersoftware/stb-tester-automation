@@ -158,8 +158,7 @@ def block_channel():
     """Blocks focused channel inside Bloqueo de canales"
 
     Raises:
-        ValueError: Not in BlockChannels page
-        ValueError: Not possible to block channel
+        AssertionError: Not possible to block channel
     """
     assert_screen()
 
@@ -173,8 +172,7 @@ def unblock_channel():
     """Unblocks focused channel inside Bloqueo de canales"
 
     Raises:
-        ValueError: Not in BlockChannels page
-        ValueError: Not possible to unblock channel
+        AssertionError: Not possible to unblock channel
     """
     assert_screen()
 
@@ -194,6 +192,7 @@ def confirm_changes_popup(save_changes=True):
 
     region = stbt.Region(515, 390, width=245, height=75)
 
+    # If confirmation pop-up is not displayed, press EXIT to meke it appear
     if not stbt.wait_until(
         lambda: stbt.match(Img.ACCPEPT_CONFIRMATION, region=region)
         or stbt.match(Img.CANCEL_CONFIRMATION, region=region),
@@ -274,6 +273,11 @@ def _preliminar_region(img, target=CaptureElement.CH_NUMBER):
 
 
 def _channel_name():
+    """Returns channel name, if found. None, otherwise
+
+    Returns:
+        str: channel name
+    """
     region = _preliminar_region(Img.FOCUSED_NUMBER, target=CaptureElement.CH_NAME)
 
     if region:
@@ -286,6 +290,11 @@ def _channel_name():
 
 
 def _is_blocked():
+    """Returns information if channel is blocked or not
+
+    Returns:
+        bool: True if blocked, False otherwise
+    """
     region = _preliminar_region(Img.FOCUSED_NUMBER, target=CaptureElement.BLOCKED_ICON)
 
     if region:

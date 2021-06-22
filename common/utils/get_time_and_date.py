@@ -23,7 +23,7 @@ class MONTH(Enum):
 
 class GetTimeAndDate:
     """
-    Class that returns date and time Ajustes and sub-menu screens
+    Class that returns date and time from Ajustes and sub-menu screens
     Screens inside Ajustes implements this class and are able to return the
     following properties:
         @current timme dictionaty (day: int, month: int, hour: int, minute: int)
@@ -55,8 +55,26 @@ class GetTimeAndDate:
 
     @property
     def time_and_date_parsed(self):
+        """ Formats start and end time captured through OCR
+
+        Example: "9 feb 12:52" or "21 mar 01:20"
+
+        Due to OCR misreading text, we are handling the possible outputa cases:
+        len(5) = "12:35"
+        len(4) = "1235"
+
+        Sometimes the ":" is not detected, so we slice the str accordingly the output
+
+        Args:
+            time_raw (str): time raw
+
+
+        Returns:
+            [dict]: containing "day", "month", "hour" and "time"
+        """
         time_and_date = self._time_and_date_raw
 
+        # 9 feb 12:52 - reads day, month, then time by reguar expression
         day = int(re.findall("^[0-9]{1,2}", time_and_date)[0])
         month = str(re.findall("[a-z]{3}", time_and_date)[0])
         time = (re.findall("[0-9]{1,2}.[0-9]{2}$", time_and_date))[0]
