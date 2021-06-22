@@ -254,7 +254,7 @@ def assert_motion():
 def _check_live_state(unblock, pin):
     try:
         assert_screen()
-    except NameError:
+    except NotInScreen:
         if _is_channel_bocked() and unblock is True:
             stbt.draw_text("Channel is blocked")
             if not _unblock_channel(pin):
