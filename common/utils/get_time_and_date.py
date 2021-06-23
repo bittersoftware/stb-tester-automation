@@ -1,9 +1,13 @@
-import stbt
 import re
 from datetime import timedelta
 from datetime import datetime
 import pytz
 from enum import Enum
+import logging
+
+import stbt
+
+logger = logging.getLogger(__file__)
 
 
 class MONTH(Enum):
@@ -86,14 +90,14 @@ class GetTimeAndDate:
             hour = time[0:1]
             minute = time[-2:]
         else:
-            print("OCR failed to read time")
+            logger.error("OCR failed to read time")
             return None
 
         try:
             hour = int(hour)
             minute = int(minute)
         except Exception as e:
-            print(e, " Failed to get time")
+            logger.error(e, " Failed to get time")
 
         stb_time = {
             "day": day,
@@ -153,8 +157,8 @@ def assert_current_time_and_date(stb_time):
     system_date = now()
 
     if system_date.month != stb_time["month"]:
-        print("SYSTEM ", system_date.month)
-        print("STB ", stb_time["month"])
+        logger.info(system_date.month)
+        logger.info(stb_time["month"])
         raise ValueError(
             "Current time {} does not match expected: {}".format(now(), stb_time)
         )
@@ -165,7 +169,7 @@ def assert_current_time_and_date(stb_time):
     delta = system_hhmm - stb_hhmm
 
     if abs(delta.total_seconds()) < 180:
-        print("Current time {} matches expected: {}".format(now(), stb_time))
+        logger.error("Current time {} matches expected: {}".format(now(), stb_time))
     else:
         raise ValueError(
             "Current delta {} is greater than 180s (3min)".format(delta.total_seconds())

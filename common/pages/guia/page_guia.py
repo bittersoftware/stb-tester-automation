@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 import re
 from datetime import timedelta
+import logging
 
 import stbt
 
 from common.exceptions import NotInScreen
 from common.utils.get_time_and_date import GetTimeAndDate
 from common.utils.rcu import RCU
+
+logger = logging.getLogger(__file__)
 
 
 class Img:
@@ -305,14 +308,14 @@ def _format_time(time_raw):
         hour = time[0:1]
         minute = time[-2:]
     else:
-        print("OCR failed to read time")
+        logger.error("OCR failed to read time")
         return None
 
     try:
         hour = int(hour)
         minute = int(minute)
     except Exception as e:
-        print(e, " Failed to get time")
+        logger.error(e, " Failed to get time")
         return None
 
     return {"hour": hour, "minute": minute}

@@ -1,8 +1,11 @@
 import time
+import logging
 
 import stbt
 from common.utils.rcu import RCU
 from common.exceptions import NotInScreen
+
+logger = logging.getLogger(__file__)
 
 
 class Img:
@@ -129,7 +132,7 @@ def access_menu(item):
             region=stbt.Region(10, 350, width=270, height=90),
         )
     except Exception:
-        print(
+        logger.error(
             "Item not found: '{}'\nCheck valid values in MENU dictionary in {}".format(
                 item, __name__
             )

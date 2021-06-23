@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
+import logging
 
 import stbt
 
@@ -8,6 +9,8 @@ from common.pages.ajustes import page_ajustes
 from common.utils.get_time_and_date import GetTimeAndDate
 from common.utils.ocr_corrections import apply_ocr_corrections
 from common.utils.rcu import RCU
+
+logger = logging.getLogger(__file__)
 
 
 class Img:
@@ -88,12 +91,12 @@ class BlockChannels(stbt.FrameObject):
             try:
                 ch = int(apply_ocr_corrections(channel, corrections=corrections))
             except Exception as e:
-                print(e, " Failed to get channel")
+                logger.error(e, " Failed to get channel")
 
             return ch
 
         else:
-            print("Channel not detected by OCR")
+            logger.error("Channel not detected by OCR")
             return None
 
 
@@ -139,18 +142,18 @@ def navigate_to_channel(channel):
     for _ in range(MAX_CHANNELS):
         if screen.ch_number_focused == channel:
             ch_name = _channel_name()
-            print("Channel {} - {} found".format(channel, ch_name))
+            logger.info("Channel {} - {} found".format(channel, ch_name))
             stbt.draw_text("Channel {} - {} found".format(channel, ch_name))
             return True
         elif screen.ch_number_focused < channel:
             stbt.press_and_wait(RCU.DOWN, stable_secs=0.2)
         else:
-            print("WARNING: Channel {} not found".format(channel))
+            logger.error("WARNING: Channel {} not found".format(channel))
             return False
 
         screen = screen.refresh()
 
-    print("WARNING: Channel {} not found".format(channel))
+    logger.error("WARNING: Channel {} not found".format(channel))
     return False
 
 

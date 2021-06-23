@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 import time
+import logging
 
 import numpy as np
 import stbt
 from common.exceptions import NotInScreen, NotFound
 from common.utils.get_time_and_date import GetTimeAndDate
 from common.utils.rcu import RCU
+
+logger = logging.getLogger(__file__)
 
 # Lists to compose 2d matrix for Ajustes options
 AJUSTES_R1 = ["Modo de pantalla", "Dolby Audio", "Lanzar y ver", "Control parental"]
@@ -163,8 +166,8 @@ def _aux_get_2d_index(item):
             return i, e.index(item)
         except ValueError:
             pass
-    print("Element not foun: {}".format(item))
-    print(
+    logger.error("Element not foun: {}".format(item))
+    logger.error(
         "Item not found: '{}'\nCheck valid values in MENU dictionary in {}".format(
             item, __name__
         )
