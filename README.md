@@ -1,9 +1,11 @@
 # stb-tester-automation
 
-##  Disclaimer:
+##  Disclaimer
 Demo project with stb-tester that runs test case scenarios for Movistar+ decoders.
 These test cases run with a test manager that is no present inside this code due to be private code.
+> Here you can find a demo of the automation framework launcher with mock tests: [Framework Demo](https://youtu.be/K1gkAeynEDY)
 
+##  Table of Content
 * [Page Object Model](#page-object-model)
 * [Page Object Classes](#page-object-classes)
 * [Test Case Scenarios and Results](#test-case-scenarios)
@@ -101,17 +103,17 @@ def perform_some_action():
 ```
 
 ##  Test Case Scenarios
-1. TC-1: Block live channel - [video](https://youtu.be/1Q1WcNrqEow)
-2. TC-2: Unblock live channel
-3. TC-3: Get event metadata from EPG - [video](https://youtu.be/ci8N95PuhzA) - [files](https://drive.google.com/drive/folders/1ZwVJssdKgyCIasFFw4b4lQqFY1KL3OpJ?usp=sharing)
-4. TC-4: Splash screen for COVID Living App - [video](https://youtu.be/zl11btFt9FI) - [files](https://drive.google.com/drive/folders/1vNHh3P3u8ymFxEVGImSyTVAkDlHp_MTq?usp=sharing)
-5. TC-5: Reply quiz for COVID - [video](https://youtu.be/Vtn5wIbvnUs)
-6. TC-6: KPI for opening Living App: Atletico de Madrid - [video](https://youtu.be/19jJDsqOks4) - [files](https://drive.google.com/drive/folders/15p7-u2DKkVzT4S6qVb2LPjBaCL8E8CJd?usp=sharing)
-7. TC-7: Validates all options have a video stream
-8. TC-8: Validates Adaptive Bitstream profile from MPEG-DASH video - [video](https://youtu.be/scA_RGUPmL8) - [files](https://drive.google.com/drive/folders/1JnqFJp48KAvsV34_gy-C0Dx9WSHMSj-4?usp=sharing)
-9. TC-9: KPI for opening Living App: Asistente COVID - [video](https://youtu.be/QM0bFDE9jzc) - [file](https://drive.google.com/drive/folders/17-VdV0-OkQyBhhDpVuLHbNOwRMirZlPV?usp=sharing)
-10. TC-10: Fast Channel Change network capture (Unicast UDP) - [files](https://drive.google.com/drive/folders/1oe7RwRs9CfAijnQcZ9iDr3eqBo1qWUVD?usp=sharing)
-11. TC-12: Zapping Endurance 10s for 6 hours
+1. [TC-1](test_cases/TC-1.py): Block live channel - [video](https://youtu.be/1Q1WcNrqEow)
+2. [TC-2](test_cases/TC-2.py): Unblock live channel
+3. [TC-3](test_cases/TC-3.py): Get event metadata from EPG - [video](https://youtu.be/ci8N95PuhzA) - [files](https://drive.google.com/drive/folders/1ZwVJssdKgyCIasFFw4b4lQqFY1KL3OpJ?usp=sharing)
+4. [TC-4](test_cases/TC-4.py): Splash screen for COVID Living App - [video](https://youtu.be/zl11btFt9FI) - [files](https://drive.google.com/drive/folders/1vNHh3P3u8ymFxEVGImSyTVAkDlHp_MTq?usp=sharing)
+5. [TC-5](test_cases/TC-5.py): Reply quiz for COVID - [video](https://youtu.be/Vtn5wIbvnUs)
+6. [TC-6](test_cases/TC-6.py): KPI for opening Living App: Atletico de Madrid - [video](https://youtu.be/19jJDsqOks4) - [files](https://drive.google.com/drive/folders/15p7-u2DKkVzT4S6qVb2LPjBaCL8E8CJd?usp=sharing)
+7. [TC-7](test_cases/TC-7.py): Validates all options have a video stream
+8. [TC-8](test_cases/TC-8.py): Validates Adaptive Bitstream profile from MPEG-DASH video - [video](https://youtu.be/scA_RGUPmL8) - [files](https://drive.google.com/drive/folders/1JnqFJp48KAvsV34_gy-C0Dx9WSHMSj-4?usp=sharing)
+9. [TC-9](test_cases/TC-9.py): KPI for opening Living App: Asistente COVID - [video](https://youtu.be/QM0bFDE9jzc) - [file](https://drive.google.com/drive/folders/17-VdV0-OkQyBhhDpVuLHbNOwRMirZlPV?usp=sharing)
+10. [TC-10](test_cases/TC-10.py): Fast Channel Change network capture (Unicast UDP) - [files](https://drive.google.com/drive/folders/1oe7RwRs9CfAijnQcZ9iDr3eqBo1qWUVD?usp=sharing)
+11. [TC-12](test_cases/TC-12.py): Zapping Endurance 10s for 6 hours
 
 > Note: TC-8 and TC-10 uses an external package to analyze and generate charts for network capture in real time
 This code is private property and can't be shared
